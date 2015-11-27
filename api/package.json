@@ -1,28 +1,27 @@
 {
   "name": "HackJammer",
   "version": "0.0.0",
-  "description": "An app to see nearby hacks and events",
+  "description": "An stripped down version of hackjammer to populate a mongo database with events",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/webdev11/wdi-project-3"
+    "url": "https://github.com/phobos101/anansi"
   },
   "keywords": [
-    "Hackthon",
+    "events",
     "meetups",
     "developer"
   ],
-  "author": "Robert Wilson, Marika Devan, Kwaku Prempeh, Emily Inglis",
+  "author": "Robert Wilson",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/webdev11/wdi-project-3/issues"
+    "url": "https://github.com/phobos101/anansi/issues"
   },
   "dependencies": {
     "async": "^1.5.0",
-    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.1",
     "cookie-parser": "^1.4.0",
     "cors": "^2.7.1",
@@ -30,12 +29,9 @@
     "express-jwt": "^3.3.0",
     "jsonwebtoken": "^5.4.1",
     "method-override": "^2.3.5",
+    "mongodb": "^2.0.49",
     "mongoose": "^4.2.7",
     "morgan": "^1.6.1",
-    "oauth-shim": "^1.1.0",
-    "passport": "^0.3.2",
-    "passport-github2": "^0.1.9",
-    "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "request": "^2.67.0"
   }
