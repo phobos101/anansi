@@ -13,9 +13,21 @@ myself, and other WDI students. You can find HackJammer [here].
 Use cURL or Insomnia REST client!
 
 There are two routes:
-* /api/events - Grabs all the events in the database
-* /api/events/populate - First drops all existing events, then populates events
+* GET /api/events - Grabs all the events in the database
+* POST /api/events/populate - First drops all existing events, then populates events
 based on keyword.
 
-Right now the keyword is hardcoded to 'hackathon', change this to whatever you
-want in the 'api > controllers >eventController.js' file on line 35.
+The keyword is grabbed from a front end 'keyword' paramater, so on your front end JS file, add something like:
+
+```javascript
+var keyword = $('#keyword-entry').val();
+
+$.ajax({
+method: 'POST',
+url: 'http://localhost:3000/api/events/populate',
+data: { keyword }
+}).done(function (data) {
+console.log('DONE!');
+listEvents();
+});
+```

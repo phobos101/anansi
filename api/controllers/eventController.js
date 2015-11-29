@@ -32,7 +32,8 @@ function getEvents(req, res) {
 
   var token = process.env.EVENTFUL_API_KEY;
   var baseUrl = "http://api.eventful.com/json/events/search?keywords=";
-  var keyword = "hackathon";
+  console.log(req.body.keyword);
+  var keyword = req.body.keyword;
   var fetchUrls = [];
 
   var url = baseUrl + keyword + "&l=United+Kingdom&app_key=" + token + "&page_number=";
@@ -52,51 +53,52 @@ function getEvents(req, res) {
 
   setTimeout(populateDB, 10000);
   function populateDB() {
-    console.log('*****************************************************');
-    console.log('[+] URLs populated. Fetching events from each page...');
-    console.log('*****************************************************');
-    var q = async.queue(function (task, done) {
-      request(task.url, function(err, res, body) {
-        if (err) return console.log(err);
-        if (res.statusCode == 200) {
-          var data = JSON.parse(body)
-          var events = data.events.event;
-          for (n in events) {
-            var newEvent = new Event();
-            newEvent.title = events[n].title;
-            newEvent.city = events[n].city_name;
-            newEvent.description = events[n].description;
-            newEvent.location = (events[n].venue_address + ", " + events[n].city_name);
-            newEvent.date = events[n].start_time;
-            try {
-              newEvent.image = events[n].image.medium.url;
-            }
-            catch(err) {
-              newEvent.image = 'http://www.fillmurray.com/200/200';
+    if (fetchUrls.length > 0) {
+      console.log('*****************************************************');
+      console.log('[+] URLs populated. Fetching events from each page...');
+      console.log('*****************************************************');
+      var q = async.queue(function (task, done) {
+        request(task.url, function(err, res, body) {
+          if (err) return console.log(err);
+          if (res.statusCode == 200) {
+            var data = JSON.parse(body)
+            var events = data.events.event;
+            for (n in events) {
+              var newEvent = new Event();
+              newEvent.title = events[n].title;
+              newEvent.city = events[n].city_name;
+              newEvent.description = events[n].description;
+              newEvent.location = (events[n].venue_address + ", " + events[n].city_name);
+              newEvent.date = events[n].start_time;
+              try {
+                newEvent.image = events[n].image.medium.url;
+              }
+              catch(err) {
+                newEvent.image = 'http://www.fillmurray.com/200/200';
+              };
+
+              newEvent.save(function (err, event) {
+                if (err) return console.log(err);
+                console.log('[+] ' + newEvent.title + 'added to DB');
+              });
             };
-
-            newEvent.save(function (err, event) {
-              if (err) return console.log(err);
-              console.log('[+] ' + newEvent.title + 'added to DB');
-            });
           };
-        };
-      });
-    }, fetchUrls.length);
+        });
+      }, fetchUrls.length);
 
-    for (var k = 0; k < fetchUrls.length; k++) {
-      q.push({ url: fetchUrls[k]});
+      for (var k = 0; k < fetchUrls.length; k++) {
+        q.push({ url: fetchUrls[k]});
+      };
+
+      setTimeout(function() {
+        res.status(200).json('Populating database with "' + keyword + '" events.');
+      }, 20000);
+    } else {
+      res.status(204).json('There are no hits for "' + keyword);
     };
   };
-
-  setTimeout(function() {
-    res.status(200).json('Populating database with "' + keyword + '" events.');
-  }, 20000);
 };
 
-function dropEvents() {
-
-}
 
 module.exports = {
   allEvents: allEvents,

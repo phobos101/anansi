@@ -9,6 +9,6 @@ var router = express.Router();
 
 // Standard routes
 router.get('/events', eventController.allEvents);
-router.get('/events/populate', eventController.getEvents);
+router.post('/events/populate', eventController.getEvents);
 
 module.exports = router;
