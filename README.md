@@ -36,4 +36,4 @@ listEvents();
 
 [Click here!]
 
-[Click here!]: https://github.com/phobos101/anansi-demo
+[Click here!]: https://github.com/phobos101/anansi-front
