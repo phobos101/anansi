@@ -1,6 +1,6 @@
 {
-  "name": "HackJammer",
-  "version": "0.0.0",
+  "name": "Anansi",
+  "version": "1.0.0",
   "description": "An stripped down version of hackjammer to populate a mongo database with events",
   "main": "app.js",
   "scripts": {

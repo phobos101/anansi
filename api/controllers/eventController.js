@@ -5,7 +5,7 @@ var mongoose  = require("mongoose");
 var MongoClient = require('mongodb').MongoClient;
 var config = require('../config/config');
 var Event = require('../models/event');
-var mongoUrl = 'mongodb://localhost:27017/anansi';
+var mongoUrl = config.database;
 
 function allEvents(req, res) {
   Event.find(function (err, events) {
